@@ -8,6 +8,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
+import { DateRange } from "react-date-range";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import { useState } from "react";
+import { format } from "date-fns";
 
 const Wrapper = styled.div`
   background-color: #003580;
@@ -62,14 +67,43 @@ const HeaderSearch = styled.div`
   border-radius: 5px;
   position: absolute;
   bottom: -25px;
+  width: 100%;
+  max-width: 1024px;
 `;
-const HeaderSearchItem = styled.div``;
+const HeaderSearchItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  span {
+    color: lightgray;
+    cursor: pointer;
+  }
+`;
 const HeaderSearchIcon = styled.div`
   color: lightgray;
 `;
-const HeaderSearchInput = styled.input``;
+const HeaderSearchInput = styled.input`
+  border: none;
+  outline: none;
+`;
+const SearchButton = styled(HeaderButton)``;
+const DatePicker = styled.div`
+  position: absolute;
+  top: 50px;
+`;
 
 const Header = () => {
+  // date picker using date-range library, here we set up use state as per docs spec
+  const [openDate, setOpenDate] = useState(false);
+  const [date, setDate] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    },
+  ]);
+
   return (
     <>
       <Wrapper>
@@ -120,13 +154,29 @@ const Header = () => {
               <HeaderSearchIcon>
                 <FontAwesomeIcon icon={faCalendarDays} />
               </HeaderSearchIcon>
-              <span>Check-In Check-Out</span>
+              <span onClick={() => setOpenDate(!openDate)}>{`${format(
+                date[0].startDate,
+                "MM/dd/yyyy"
+              )} to ${format(date[0].endDate, "MM/dd/yyyy")} `}</span>
+              {openDate && (
+                <DatePicker>
+                  <DateRange
+                    editableDateInputs={true}
+                    onChange={(item) => setDate([item.selection])}
+                    moveRangeOnFirstSelection={false}
+                    ranges={date}
+                  />
+                </DatePicker>
+              )}
             </HeaderSearchItem>
             <HeaderSearchItem>
               <HeaderSearchIcon>
                 <FontAwesomeIcon icon={faPerson} />
               </HeaderSearchIcon>
               <span>2 adults 2 children 1 room</span>
+            </HeaderSearchItem>
+            <HeaderSearchItem>
+              <SearchButton>Search</SearchButton>
             </HeaderSearchItem>
           </HeaderSearch>
         </HeaderContainer>

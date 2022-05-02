@@ -103,6 +103,14 @@ const Header = () => {
       key: "selection",
     },
   ]);
+  // options for number of adults, children and rooms picker
+
+  const [open, setOpen] = useState(false);
+  const [options, setOptions] = useState({
+    adults: 1,
+    children: 0,
+    rooms: 2,
+  });
 
   return (
     <>
@@ -154,10 +162,12 @@ const Header = () => {
               <HeaderSearchIcon>
                 <FontAwesomeIcon icon={faCalendarDays} />
               </HeaderSearchIcon>
+              {/* onclick event for toggling date picker calendar open and close */}
               <span onClick={() => setOpenDate(!openDate)}>{`${format(
                 date[0].startDate,
                 "MM/dd/yyyy"
               )} to ${format(date[0].endDate, "MM/dd/yyyy")} `}</span>
+              {/* dateRange library wrapped in DatePicker styled component */}
               {openDate && (
                 <DatePicker>
                   <DateRange
@@ -173,7 +183,7 @@ const Header = () => {
               <HeaderSearchIcon>
                 <FontAwesomeIcon icon={faPerson} />
               </HeaderSearchIcon>
-              <span>2 adults 2 children 1 room</span>
+              <span>{`${options.adults} adults ${options.children} children ${options.rooms} rooms`}</span>
             </HeaderSearchItem>
             <HeaderSearchItem>
               <SearchButton>Search</SearchButton>

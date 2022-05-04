@@ -7,7 +7,7 @@ import {
   faTaxi,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
@@ -93,6 +93,53 @@ const DatePicker = styled.div`
   top: 50px;
 `;
 
+// Search bar options
+const Options = styled.div`
+  position: absolute;
+  top: 50px;
+  background-color: white;
+  color: gray;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.4);
+`;
+const OptionItem = styled.div`
+  display: flex;
+  width: 200px;
+  justify-content: space-between;
+  margin: 10px;
+`;
+const OptionCounter = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: black;
+`;
+const OptionText = styled.span``;
+const OptionCounterButton = styled.button`
+  width: 30px;
+  height: 30px;
+  border: 1px solid #0071c2;
+  color: #0071c2;
+  cursor: pointer;
+  background-color: white;
+
+  :disabled {
+    cursor: not-allowed;
+    background-color: tomato;
+    transition: 0.3s ease-in-out;
+  }
+
+  ${(props) =>
+    props.toggleInvalid &&
+    css`
+      background-color: tomato;
+      transition: 0.3s ease-in-out;
+    `}
+`;
+const OptionCounterNumber = styled.span``;
+
 const Header = () => {
   // date picker using date-range library, here we set up use state as per docs spec
   const [openDate, setOpenDate] = useState(false);
@@ -103,14 +150,29 @@ const Header = () => {
       key: "selection",
     },
   ]);
-  // options for number of adults, children and rooms picker
+  // options for number of adults, children and room picker
 
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState({
-    adults: 1,
+    adult: 1,
     children: 0,
-    rooms: 2,
+    room: 2,
   });
+
+  // testing toggle css function - come back later for this
+  // const [toggle, setToggle] = useState(false);
+
+  // options button handleclick function
+
+  const handleOption = (name, operation) => {
+    setOptions((prev) => {
+      return {
+        ...prev,
+        [name]:
+          operation === "increase" ? options[name] + 1 : options[name] - 1,
+      };
+    });
+  };
 
   return (
     <>
@@ -183,7 +245,67 @@ const Header = () => {
               <HeaderSearchIcon>
                 <FontAwesomeIcon icon={faPerson} />
               </HeaderSearchIcon>
-              <span>{`${options.adults} adults ${options.children} children ${options.rooms} rooms`}</span>
+              <span
+                onClick={() => setOpen(!open)}
+              >{`${options.adult} adults ${options.children} children ${options.room} room`}</span>
+              {open && (
+                <Options>
+                  <OptionItem>
+                    <OptionText>Adult</OptionText>
+                    <OptionCounter>
+                      <OptionCounterButton
+                        // toggleInvalid={toggle} come back later to this testing toggle attribute
+                        disabled={options.adult <= 1}
+                        onClick={() => handleOption("adult", "decrease")}
+                      >
+                        -
+                      </OptionCounterButton>
+                      <OptionCounterNumber>{options.adult}</OptionCounterNumber>
+                      <OptionCounterButton
+                        onClick={() => handleOption("adult", "increase")}
+                      >
+                        +
+                      </OptionCounterButton>
+                    </OptionCounter>
+                  </OptionItem>
+                  <OptionItem>
+                    <OptionText>children</OptionText>
+                    <OptionCounter>
+                      <OptionCounterButton
+                        disabled={options.children <= 0}
+                        onClick={() => handleOption("children", "decrease")}
+                      >
+                        -
+                      </OptionCounterButton>
+                      <OptionCounterNumber>
+                        {options.children}
+                      </OptionCounterNumber>
+                      <OptionCounterButton
+                        onClick={() => handleOption("children", "increase")}
+                      >
+                        +
+                      </OptionCounterButton>
+                    </OptionCounter>
+                  </OptionItem>
+                  <OptionItem>
+                    <OptionText>Room</OptionText>
+                    <OptionCounter>
+                      <OptionCounterButton
+                        disabled={options.room <= 1}
+                        onClick={() => handleOption("room", "decrease")}
+                      >
+                        -
+                      </OptionCounterButton>
+                      <OptionCounterNumber>{options.room}</OptionCounterNumber>
+                      <OptionCounterButton
+                        onClick={() => handleOption("room", "increase")}
+                      >
+                        +
+                      </OptionCounterButton>
+                    </OptionCounter>
+                  </OptionItem>
+                </Options>
+              )}
             </HeaderSearchItem>
             <HeaderSearchItem>
               <SearchButton>Search</SearchButton>

@@ -140,7 +140,7 @@ const OptionCounterButton = styled.button`
 `;
 const OptionCounterNumber = styled.span``;
 
-const Header = () => {
+const Header = ({ type }) => {
   // date picker using date-range library, here we set up use state as per docs spec
   const [openDate, setOpenDate] = useState(false);
   const [date, setDate] = useState([
@@ -210,107 +210,114 @@ const Header = () => {
             ratione.
           </HeaderDescription>
           <HeaderButton>Sign in / Register</HeaderButton>
-          <HeaderSearch>
-            <HeaderSearchItem>
-              <HeaderSearchIcon>
-                <FontAwesomeIcon icon={faBed} />
-              </HeaderSearchIcon>
-              <HeaderSearchInput
-                type="text"
-                placeholder="Where are you going?"
-              />
-            </HeaderSearchItem>
-            <HeaderSearchItem>
-              <HeaderSearchIcon>
-                <FontAwesomeIcon icon={faCalendarDays} />
-              </HeaderSearchIcon>
-              {/* onclick event for toggling date picker calendar open and close */}
-              <span onClick={() => setOpenDate(!openDate)}>{`${format(
-                date[0].startDate,
-                "MM/dd/yyyy"
-              )} to ${format(date[0].endDate, "MM/dd/yyyy")} `}</span>
-              {/* dateRange library wrapped in DatePicker styled component */}
-              {openDate && (
-                <DatePicker>
-                  <DateRange
-                    editableDateInputs={true}
-                    onChange={(item) => setDate([item.selection])}
-                    moveRangeOnFirstSelection={false}
-                    ranges={date}
-                  />
-                </DatePicker>
-              )}
-            </HeaderSearchItem>
-            <HeaderSearchItem>
-              <HeaderSearchIcon>
-                <FontAwesomeIcon icon={faPerson} />
-              </HeaderSearchIcon>
-              <span
-                onClick={() => setOpen(!open)}
-              >{`${options.adult} adults ${options.children} children ${options.room} room`}</span>
-              {open && (
-                <Options>
-                  <OptionItem>
-                    <OptionText>Adult</OptionText>
-                    <OptionCounter>
-                      <OptionCounterButton
-                        // toggleInvalid={toggle} come back later to this testing toggle attribute
-                        disabled={options.adult <= 1}
-                        onClick={() => handleOption("adult", "decrease")}
-                      >
-                        -
-                      </OptionCounterButton>
-                      <OptionCounterNumber>{options.adult}</OptionCounterNumber>
-                      <OptionCounterButton
-                        onClick={() => handleOption("adult", "increase")}
-                      >
-                        +
-                      </OptionCounterButton>
-                    </OptionCounter>
-                  </OptionItem>
-                  <OptionItem>
-                    <OptionText>children</OptionText>
-                    <OptionCounter>
-                      <OptionCounterButton
-                        disabled={options.children <= 0}
-                        onClick={() => handleOption("children", "decrease")}
-                      >
-                        -
-                      </OptionCounterButton>
-                      <OptionCounterNumber>
-                        {options.children}
-                      </OptionCounterNumber>
-                      <OptionCounterButton
-                        onClick={() => handleOption("children", "increase")}
-                      >
-                        +
-                      </OptionCounterButton>
-                    </OptionCounter>
-                  </OptionItem>
-                  <OptionItem>
-                    <OptionText>Room</OptionText>
-                    <OptionCounter>
-                      <OptionCounterButton
-                        disabled={options.room <= 1}
-                        onClick={() => handleOption("room", "decrease")}
-                      >
-                        -
-                      </OptionCounterButton>
-                      <OptionCounterNumber>{options.room}</OptionCounterNumber>
-                      <OptionCounterButton
-                        onClick={() => handleOption("room", "increase")}
-                      >
-                        +
-                      </OptionCounterButton>
-                    </OptionCounter>
-                  </OptionItem>
-                </Options>
-              )}
-            </HeaderSearchItem>
-            <HeaderSearchItem>
-              <SearchButton>Search</SearchButton>
-            </HeaderSearchItem>
-          </HeaderSearch>
+          {/* search area from down on here */}
+          {type !== "list" && (
+            <HeaderSearch>
+              <HeaderSearchItem>
+                <HeaderSearchIcon>
+                  <FontAwesomeIcon icon={faBed} />
+                </HeaderSearchIcon>
+                <HeaderSearchInput
+                  type="text"
+                  placeholder="Where are you going?"
+                />
+              </HeaderSearchItem>
+              <HeaderSearchItem>
+                <HeaderSearchIcon>
+                  <FontAwesomeIcon icon={faCalendarDays} />
+                </HeaderSearchIcon>
+                {/* onclick event for toggling date picker calendar open and close */}
+                <span onClick={() => setOpenDate(!openDate)}>{`${format(
+                  date[0].startDate,
+                  "MM/dd/yyyy"
+                )} to ${format(date[0].endDate, "MM/dd/yyyy")} `}</span>
+                {/* dateRange library wrapped in DatePicker styled component */}
+                {openDate && (
+                  <DatePicker>
+                    <DateRange
+                      editableDateInputs={true}
+                      onChange={(item) => setDate([item.selection])}
+                      moveRangeOnFirstSelection={false}
+                      ranges={date}
+                    />
+                  </DatePicker>
+                )}
+              </HeaderSearchItem>
+              <HeaderSearchItem>
+                <HeaderSearchIcon>
+                  <FontAwesomeIcon icon={faPerson} />
+                </HeaderSearchIcon>
+                <span
+                  onClick={() => setOpen(!open)}
+                >{`${options.adult} adults ${options.children} children ${options.room} room`}</span>
+                {open && (
+                  <Options>
+                    <OptionItem>
+                      <OptionText>Adult</OptionText>
+                      <OptionCounter>
+                        <OptionCounterButton
+                          // toggleInvalid={toggle} come back later to this testing toggle attribute
+                          disabled={options.adult <= 1}
+                          onClick={() => handleOption("adult", "decrease")}
+                        >
+                          -
+                        </OptionCounterButton>
+                        <OptionCounterNumber>
+                          {options.adult}
+                        </OptionCounterNumber>
+                        <OptionCounterButton
+                          onClick={() => handleOption("adult", "increase")}
+                        >
+                          +
+                        </OptionCounterButton>
+                      </OptionCounter>
+                    </OptionItem>
+                    <OptionItem>
+                      <OptionText>children</OptionText>
+                      <OptionCounter>
+                        <OptionCounterButton
+                          disabled={options.children <= 0}
+                          onClick={() => handleOption("children", "decrease")}
+                        >
+                          -
+                        </OptionCounterButton>
+                        <OptionCounterNumber>
+                          {options.children}
+                        </OptionCounterNumber>
+                        <OptionCounterButton
+                          onClick={() => handleOption("children", "increase")}
+                        >
+                          +
+                        </OptionCounterButton>
+                      </OptionCounter>
+                    </OptionItem>
+                    <OptionItem>
+                      <OptionText>Room</OptionText>
+                      <OptionCounter>
+                        <OptionCounterButton
+                          disabled={options.room <= 1}
+                          onClick={() => handleOption("room", "decrease")}
+                        >
+                          -
+                        </OptionCounterButton>
+                        <OptionCounterNumber>
+                          {options.room}
+                        </OptionCounterNumber>
+                        <OptionCounterButton
+                          onClick={() => handleOption("room", "increase")}
+                        >
+                          +
+                        </OptionCounterButton>
+                      </OptionCounter>
+                    </OptionItem>
+                  </Options>
+                )}
+              </HeaderSearchItem>
+              <HeaderSearchItem>
+                <SearchButton>Search</SearchButton>
+              </HeaderSearchItem>
+            </HeaderSearch>
+          )}
         </HeaderContainer>
       </Wrapper>
     </>

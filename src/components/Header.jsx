@@ -25,6 +25,12 @@ const HeaderContainer = styled.div`
   width: 100%;
   max-width: 1024px;
   margin: 20px 0px 100px 0px;
+
+  ${(props) =>
+    props.listMode &&
+    css`
+      margin: 20px 0px 0px 0px;
+    `}
 `;
 const HeaderList = styled.div`
   display: flex;
@@ -36,7 +42,8 @@ const HeaderListItem = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  :active {
+
+  &:active {
     border: 1px solid white;
     padding: 10px;
     border-radius: 20px;
@@ -91,6 +98,7 @@ const SearchButton = styled(HeaderButton)``;
 const DatePicker = styled.div`
   position: absolute;
   top: 50px;
+  z-index: 2;
 `;
 
 // Search bar options
@@ -102,6 +110,7 @@ const Options = styled.div`
   border-radius: 5px;
   -webkit-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.4);
   box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.4);
+  z-index: 2;
 `;
 const OptionItem = styled.div`
   display: flex;
@@ -140,7 +149,7 @@ const OptionCounterButton = styled.button`
 `;
 const OptionCounterNumber = styled.span``;
 
-const Header = ({ type }) => {
+const Header = ({ type, listMode }) => {
   // date picker using date-range library, here we set up use state as per docs spec
   const [openDate, setOpenDate] = useState(false);
   const [date, setDate] = useState([
@@ -156,7 +165,7 @@ const Header = ({ type }) => {
   const [options, setOptions] = useState({
     adult: 1,
     children: 0,
-    room: 2,
+    room: 1,
   });
 
   // testing toggle css function - come back later for this
@@ -177,7 +186,7 @@ const Header = ({ type }) => {
   return (
     <>
       <Wrapper>
-        <HeaderContainer>
+        <HeaderContainer listMode={listMode}>
           <HeaderList>
             <HeaderListItem>
               <FontAwesomeIcon icon={faBed} />
@@ -200,123 +209,125 @@ const Header = ({ type }) => {
               <span>Airport Taxi</span>
             </HeaderListItem>
           </HeaderList>
-          <HeaderTitle>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto,
-            libero?
-          </HeaderTitle>
-          <HeaderDescription>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque culpa
-            labore debitis soluta at consequatur quis fugiat veniam porro
-            ratione.
-          </HeaderDescription>
-          <HeaderButton>Sign in / Register</HeaderButton>
-          {/* search area from down on here */}
           {type !== "list" && (
-            <HeaderSearch>
-              <HeaderSearchItem>
-                <HeaderSearchIcon>
-                  <FontAwesomeIcon icon={faBed} />
-                </HeaderSearchIcon>
-                <HeaderSearchInput
-                  type="text"
-                  placeholder="Where are you going?"
-                />
-              </HeaderSearchItem>
-              <HeaderSearchItem>
-                <HeaderSearchIcon>
-                  <FontAwesomeIcon icon={faCalendarDays} />
-                </HeaderSearchIcon>
-                {/* onclick event for toggling date picker calendar open and close */}
-                <span onClick={() => setOpenDate(!openDate)}>{`${format(
-                  date[0].startDate,
-                  "MM/dd/yyyy"
-                )} to ${format(date[0].endDate, "MM/dd/yyyy")} `}</span>
-                {/* dateRange library wrapped in DatePicker styled component */}
-                {openDate && (
-                  <DatePicker>
-                    <DateRange
-                      editableDateInputs={true}
-                      onChange={(item) => setDate([item.selection])}
-                      moveRangeOnFirstSelection={false}
-                      ranges={date}
-                    />
-                  </DatePicker>
-                )}
-              </HeaderSearchItem>
-              <HeaderSearchItem>
-                <HeaderSearchIcon>
-                  <FontAwesomeIcon icon={faPerson} />
-                </HeaderSearchIcon>
-                <span
-                  onClick={() => setOpen(!open)}
-                >{`${options.adult} adults ${options.children} children ${options.room} room`}</span>
-                {open && (
-                  <Options>
-                    <OptionItem>
-                      <OptionText>Adult</OptionText>
-                      <OptionCounter>
-                        <OptionCounterButton
-                          // toggleInvalid={toggle} come back later to this testing toggle attribute
-                          disabled={options.adult <= 1}
-                          onClick={() => handleOption("adult", "decrease")}
-                        >
-                          -
-                        </OptionCounterButton>
-                        <OptionCounterNumber>
-                          {options.adult}
-                        </OptionCounterNumber>
-                        <OptionCounterButton
-                          onClick={() => handleOption("adult", "increase")}
-                        >
-                          +
-                        </OptionCounterButton>
-                      </OptionCounter>
-                    </OptionItem>
-                    <OptionItem>
-                      <OptionText>children</OptionText>
-                      <OptionCounter>
-                        <OptionCounterButton
-                          disabled={options.children <= 0}
-                          onClick={() => handleOption("children", "decrease")}
-                        >
-                          -
-                        </OptionCounterButton>
-                        <OptionCounterNumber>
-                          {options.children}
-                        </OptionCounterNumber>
-                        <OptionCounterButton
-                          onClick={() => handleOption("children", "increase")}
-                        >
-                          +
-                        </OptionCounterButton>
-                      </OptionCounter>
-                    </OptionItem>
-                    <OptionItem>
-                      <OptionText>Room</OptionText>
-                      <OptionCounter>
-                        <OptionCounterButton
-                          disabled={options.room <= 1}
-                          onClick={() => handleOption("room", "decrease")}
-                        >
-                          -
-                        </OptionCounterButton>
-                        <OptionCounterNumber>
-                          {options.room}
-                        </OptionCounterNumber>
-                        <OptionCounterButton
-                          onClick={() => handleOption("room", "increase")}
-                        >
-                          +
-                        </OptionCounterButton>
-                      </OptionCounter>
-                    </OptionItem>
-                  </Options>
-                )}
-              </HeaderSearchItem>
-              <HeaderSearchItem>
-                <SearchButton>Search</SearchButton>
-              </HeaderSearchItem>
-            </HeaderSearch>
+            <>
+              <HeaderTitle>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto,
+                libero?
+              </HeaderTitle>
+              <HeaderDescription>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
+                culpa labore debitis soluta at consequatur quis fugiat veniam
+                porro ratione.
+              </HeaderDescription>
+              <HeaderButton>Sign in / Register</HeaderButton>
+
+              <HeaderSearch>
+                <HeaderSearchItem>
+                  <HeaderSearchIcon>
+                    <FontAwesomeIcon icon={faBed} />
+                  </HeaderSearchIcon>
+                  <HeaderSearchInput
+                    type="text"
+                    placeholder="Where are you going?"
+                  />
+                </HeaderSearchItem>
+                <HeaderSearchItem>
+                  <HeaderSearchIcon>
+                    <FontAwesomeIcon icon={faCalendarDays} />
+                  </HeaderSearchIcon>
+                  {/* onclick event for toggling date picker calendar open and close */}
+                  <span onClick={() => setOpenDate(!openDate)}>{`${format(
+                    date[0].startDate,
+                    "MM/dd/yyyy"
+                  )} to ${format(date[0].endDate, "MM/dd/yyyy")} `}</span>
+                  {/* dateRange library wrapped in DatePicker styled component */}
+                  {openDate && (
+                    <DatePicker>
+                      <DateRange
+                        editableDateInputs={true}
+                        onChange={(item) => setDate([item.selection])}
+                        moveRangeOnFirstSelection={false}
+                        ranges={date}
+                      />
+                    </DatePicker>
+                  )}
+                </HeaderSearchItem>
+                <HeaderSearchItem>
+                  <HeaderSearchIcon>
+                    <FontAwesomeIcon icon={faPerson} />
+                  </HeaderSearchIcon>
+                  <span
+                    onClick={() => setOpen(!open)}
+                  >{`${options.adult} adults ${options.children} children ${options.room} room`}</span>
+                  {open && (
+                    <Options>
+                      <OptionItem>
+                        <OptionText>Adult</OptionText>
+                        <OptionCounter>
+                          <OptionCounterButton
+                            // toggleInvalid={toggle} come back later to this testing toggle attribute
+                            disabled={options.adult <= 1}
+                            onClick={() => handleOption("adult", "decrease")}
+                          >
+                            -
+                          </OptionCounterButton>
+                          <OptionCounterNumber>
+                            {options.adult}
+                          </OptionCounterNumber>
+                          <OptionCounterButton
+                            onClick={() => handleOption("adult", "increase")}
+                          >
+                            +
+                          </OptionCounterButton>
+                        </OptionCounter>
+                      </OptionItem>
+                      <OptionItem>
+                        <OptionText>children</OptionText>
+                        <OptionCounter>
+                          <OptionCounterButton
+                            disabled={options.children <= 0}
+                            onClick={() => handleOption("children", "decrease")}
+                          >
+                            -
+                          </OptionCounterButton>
+                          <OptionCounterNumber>
+                            {options.children}
+                          </OptionCounterNumber>
+                          <OptionCounterButton
+                            onClick={() => handleOption("children", "increase")}
+                          >
+                            +
+                          </OptionCounterButton>
+                        </OptionCounter>
+                      </OptionItem>
+                      <OptionItem>
+                        <OptionText>Room</OptionText>
+                        <OptionCounter>
+                          <OptionCounterButton
+                            disabled={options.room <= 1}
+                            onClick={() => handleOption("room", "decrease")}
+                          >
+                            -
+                          </OptionCounterButton>
+                          <OptionCounterNumber>
+                            {options.room}
+                          </OptionCounterNumber>
+                          <OptionCounterButton
+                            onClick={() => handleOption("room", "increase")}
+                          >
+                            +
+                          </OptionCounterButton>
+                        </OptionCounter>
+                      </OptionItem>
+                    </Options>
+                  )}
+                </HeaderSearchItem>
+                <HeaderSearchItem>
+                  <SearchButton>Search</SearchButton>
+                </HeaderSearchItem>
+              </HeaderSearch>
+            </>
           )}
         </HeaderContainer>
       </Wrapper>

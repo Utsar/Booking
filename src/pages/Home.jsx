@@ -2,15 +2,19 @@ import styled from "styled-components";
 import Featured from "../components/Featured";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
+import PropertyList from "../components/PropertyList";
 
 const HomeContainer = styled.div`
-  margin-top: 50px;
+  margin-top: 3.125rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
+  gap: 1.875rem;
 `;
-
+const HomeTitle = styled.h1`
+  width: 1024px;
+  font-size: 20px;
+`;
 const Home = () => {
   return (
     <>
@@ -18,6 +22,9 @@ const Home = () => {
       <Header />
       <HomeContainer>
         <Featured />
+        <HomeTitle>Browse by property type</HomeTitle>
+        <PropertyList />
+        <HomeTitle>Homes guests love</HomeTitle>
       </HomeContainer>
     </>
   );

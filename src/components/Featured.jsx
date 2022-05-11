@@ -5,25 +5,26 @@ const Wrapper = styled.div`
   max-width: 1024px;
   display: flex;
   justify-content: space-between;
-  gap: 20px;
+  gap: 1.25rem;
   z-index: 1;
 `;
 const FeaturedItem = styled.div`
   position: relative;
   color: white;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   overflow: hidden;
   height: 250px;
 
   img {
     width: 100%;
+    height: 100%;
     object-fit: cover;
   }
 `;
 const FeaturedItemTitles = styled.div`
   position: absolute;
-  bottom: 20px;
-  left: 20px;
+  bottom: 1.25rem;
+  left: 1.25rem;
   h1 {
   }
   h2 {

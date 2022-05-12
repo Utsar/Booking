@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Featured from "../components/Featured";
+import FeaturedProperties from "../components/FeaturedProperties";
 import Header from "../components/Header";
+import MailList from "../components/MailList";
 import Navbar from "../components/Navbar";
 import PropertyList from "../components/PropertyList";
 
@@ -25,6 +27,8 @@ const Home = () => {
         <HomeTitle>Browse by property type</HomeTitle>
         <PropertyList />
         <HomeTitle>Homes guests love</HomeTitle>
+        <FeaturedProperties />
+        <MailList />
       </HomeContainer>
     </>
   );

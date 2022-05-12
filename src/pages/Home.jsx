@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Featured from "../components/Featured";
 import FeaturedProperties from "../components/FeaturedProperties";
+import Footer from "../components/Footer";
 import Header from "../components/Header";
 import MailList from "../components/MailList";
 import Navbar from "../components/Navbar";
@@ -29,6 +30,7 @@ const Home = () => {
         <HomeTitle>Homes guests love</HomeTitle>
         <FeaturedProperties />
         <MailList />
+        <Footer />
       </HomeContainer>
     </>
   );

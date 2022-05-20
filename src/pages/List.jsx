@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import { format } from "date-fns";
 import { DateRange } from "react-date-range";
+import SearchItem from "../components/SearchItem";
 
 const ListContainer = styled.div`
   display: flex;
@@ -162,7 +163,15 @@ const List = () => {
             </ListSearchItem>
             <SearchButton>Search</SearchButton>
           </ListSearch>
-          <ListResult></ListResult>
+          <ListResult>
+            <SearchItem />
+            <SearchItem />
+            <SearchItem />
+            <SearchItem />
+            <SearchItem />
+            <SearchItem />
+            <SearchItem />
+          </ListResult>
         </ListWrapper>
       </ListContainer>
     </>

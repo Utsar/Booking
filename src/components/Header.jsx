@@ -13,6 +13,7 @@ import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { useState } from "react";
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   background-color: #003580;
@@ -151,6 +152,7 @@ const OptionCounterNumber = styled.span``;
 
 const Header = ({ type, listMode }) => {
   // date picker using date-range library, here we set up use state as per docs spec
+  const [destination, setDestination] = useState("");
   const [openDate, setOpenDate] = useState(false);
   const [date, setDate] = useState([
     {
@@ -172,7 +174,7 @@ const Header = ({ type, listMode }) => {
   // const [toggle, setToggle] = useState(false);
 
   // options button handleclick function
-
+  const navigate = useNavigate();
   const handleOption = (name, operation) => {
     setOptions((prev) => {
       return {
@@ -181,6 +183,10 @@ const Header = ({ type, listMode }) => {
           operation === "increase" ? options[name] + 1 : options[name] - 1,
       };
     });
+  };
+
+  const handleSearch = () => {
+    navigate("/hotels", { state: { destination, date, options } });
   };
 
   return (
@@ -230,6 +236,7 @@ const Header = ({ type, listMode }) => {
                   <HeaderSearchInput
                     type="text"
                     placeholder="Where are you going?"
+                    onChange={(e) => setDestination(e.target.value)}
                   />
                 </HeaderSearchItem>
                 <HeaderSearchItem>
@@ -249,6 +256,7 @@ const Header = ({ type, listMode }) => {
                         onChange={(item) => setDate([item.selection])}
                         moveRangeOnFirstSelection={false}
                         ranges={date}
+                        minDate={new Date()}
                       />
                     </DatePicker>
                   )}
@@ -324,7 +332,7 @@ const Header = ({ type, listMode }) => {
                   )}
                 </HeaderSearchItem>
                 <HeaderSearchItem>
-                  <SearchButton>Search</SearchButton>
+                  <SearchButton onClick={handleSearch}>Search</SearchButton>
                 </HeaderSearchItem>
               </HeaderSearch>
             </>
